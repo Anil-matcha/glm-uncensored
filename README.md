@@ -1,64 +1,65 @@
 # GLM Abliterated API with Muapi
 
-Call Muapi's hosted GLM abliterated and derestricted variants with a stable REST interface. This guide provides the model IDs, a cURL quick start, and a Python example for async submission and polling.
+Compare Muapi's GLM 5.3 Flash, GLM 5.3, and GLM 4.6 Derestricted routes by context, image input, output cap, and token price.
 
-## Related Projects
+This guide compares three hosted GLM routes. GLM 5.3 Flash accepts optional image input; the full-size GLM 5.3 and GLM 4.6 Derestricted v5 schemas are text-only.
 
-- [Muapi Uncensored AI API guide](https://github.com/Anil-matcha/Uncensored-AI-API) — broader API setup and examples for Muapi's abliterated LLM endpoints.
-- [Awesome Abliterated LLMs](https://github.com/Anil-matcha/awesome-abliterated-llms) — model comparison and evaluation notes.
-- [Open Generative AI](https://github.com/Anil-matcha/Open-Generative-AI) — a creative AI workspace connected to Muapi.
+Muapi uses labels such as abliterated, obliterated, or derestricted for some routes. Those labels describe a model or endpoint; they do not guarantee a response or change Muapi's acceptable-use policy.
 
-## Muapi GLM routes
+## Choose a model
 
-| Model | Muapi endpoint |
-|---|---|
-| GLM 5.3 Flash Abliterated | **glm-5-3-flash-abliterated** |
-| GLM 5.3 Abliterated | **glm-5-3-abliterated** |
-| GLM 4.6 Derestricted v5 | **glm-4-6-derestricted-v5** |
+| Muapi model | Context | Input | Input / output per 1M tokens | Output cap | Guide |
+|---|---:|---|---:|---:|---|
+| GLM 5.3 Flash Abliterated (<code>glm-5-3-flash-abliterated</code>) | 1M | Text + image | $0.40 / $1.60 | 32768 | [Details](docs/models/glm-5-3-flash-abliterated.md) |
+| GLM 5.3 Abliterated (<code>glm-5-3-abliterated</code>) | 1M | Text | $2.50 / $4.50 | 32768 | [Details](docs/models/glm-5-3-abliterated.md) |
+| GLM 4.6 Derestricted v5 (<code>glm-4-6-derestricted-v5</code>) | 131K | Text | $0.80 / $3.00 | 32768 | [Details](docs/models/glm-4-6-derestricted-v5.md) |
 
-The word “uncensored” in this repository name is a search label, not a guarantee about every route or response. These routes are described by Muapi as abliterated or derestricted variants; behavior can vary. Evaluate the exact model and follow Muapi's terms.
+Catalog rates and availability can change. Prices shown here reflect the Muapi catalog checked on 2026-11-25; verify the live page before production budgeting.
 
 ## Quick start
 
-Create a key at [Muapi API Keys](https://muapi.ai/access-keys), then set it in your shell:
+Create a key in the [Muapi dashboard](https://muapi.ai/access-keys), then set it in your shell:
 
-~~~bash
-export MUAPI_KEY="your-muapi-key"
-~~~
+```bash
+export MUAPI_KEY='your-muapi-key'
+```
 
-Submit a prompt to GLM 5.3 Flash Abliterated:
+Submit a prompt to the first route:
 
-~~~bash
+```bash
 curl -X POST https://api.muapi.ai/api/v1/glm-5-3-flash-abliterated \
   -H "x-api-key: $MUAPI_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"prompt":"Explain how to design a reliable background job system."}'
-~~~
+  -d '{"prompt":"Explain the trade-offs in this design and list its assumptions."}'
+```
 
-Poll the returned request:
+The response contains a request_id. Poll it for the result:
 
-~~~bash
+```bash
 curl "https://api.muapi.ai/api/v1/predictions/REQUEST_ID/result" \
   -H "x-api-key: $MUAPI_KEY"
-~~~
+```
 
-The other variants use the endpoint IDs in the table. Check the [GLM Abliterated API page](https://muapi.ai/glm-abliterated-api) for current model details, request fields, availability, and pricing.
+Runnable Python examples are in [examples](examples/). They submit a prompt, poll the result, or stream text when the selected route supports streaming. See the [Muapi streaming guide](https://muapi.ai/docs/streaming).
 
-## Python example
+## Documentation
 
-Requires Python 3.9+ and **requests**.
+- [Model selection guide](docs/model-selection.md)
+- [API reference and request schemas](docs/api-reference.md)
+- [Pricing](docs/pricing.md)
+- [Operations and error handling](docs/operations.md)
+- [FAQ](docs/faq.md)
+- [Glossary](docs/glossary.md)
+- [Evaluation protocol](docs/evaluation.md)
+- [Prompt templates](prompts.md)
+- [Documentation index](docs/README.md)
 
-~~~bash
-python -m pip install -r requirements.txt
-python examples/submit.py "Explain how to review a pull request."
-python examples/submit.py --model glm-5-3-abliterated "Outline a migration from REST to event-driven processing."
-~~~
+## Muapi links
 
-## Links
-
-- [GLM Abliterated API on Muapi](https://muapi.ai/glm-abliterated-api)
-- [Muapi API reference](https://muapi.ai/docs/api-reference)
+- [Muapi home](https://muapi.ai)
 - [Create or manage an API key](https://muapi.ai/access-keys)
-- [Muapi](https://muapi.ai)
+- [Muapi API reference](https://muapi.ai/docs/api-reference)
+- [Muapi model catalog](https://muapi.ai/models)
+- [Muapi model-family page](https://muapi.ai/glm-abliterated-api)
 
-Model availability, request fields, and pricing can change. Confirm them on the live Muapi page.
+This repository documents hosted Muapi routes. It does not distribute model weights or independently verify model behavior. Use Muapi's live page for current availability, fields, and prices.
